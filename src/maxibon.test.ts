@@ -24,7 +24,7 @@ describe("Maxibon Kata", () => {
       // We don't want to limit the scenario to Karumi developers, so we use a generic array of developers.
       // These developers have not any limit of maxibons to grab or name restrictions.
       fc.property(fc.integer(), fc.array(fc.record({ name: fc.string(), maxibonsToGrab: fc.integer() })), (initialMaxibons, developers) => {
-        const freezer = new Freezer(initialMaxibons);
+        const freezer = Freezer.startWith(initialMaxibons);
         developers.map((developerParams) => {
           new Developer(developerParams.name, developerParams.maxibonsToGrab).grabMaxibonFrom(freezer);
         });
@@ -35,7 +35,7 @@ describe("Maxibon Kata", () => {
 
   describe("Developer", () => {
     it("decrease the Maxibons at freezer when developer grapes from it", () => {
-      const freezer = new Freezer(10);
+      const freezer = Freezer.startWith(10);
       const developer = new Developer("Pedro", 3);
 
       developer.grabMaxibonFrom(freezer);
@@ -48,12 +48,17 @@ describe("Maxibon Kata", () => {
   // This API has a delivered smell exposing the internal state of the object.
   describe("Freezer", () => {
     it("decrease the Maxibons at freezer when developer grapes from it", () => {
-      const freezer = new Freezer(10);
+      const freezer = Freezer.startWith(10);
 
       freezer.decreaseMaxibons(3);
 
       expect(freezer.numberOfMaxibons).toBe(7);
     })
+
+    it("not allows negative values when Freezer starts", () => {
+      expect(() => {Freezer.startWith(-1)}).toThrowError("Freezer cannot start with negative maxibons")
+    });
+
   })
 
 
