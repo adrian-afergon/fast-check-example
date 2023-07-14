@@ -17,7 +17,7 @@ describe("Test based on properties", () => {
 // Developer -> grap maxibons from freezer
 // Freezer -> notify when there are less than 2 maxibons
 describe("Maxibon Kata", () => {
-  it("Freezer could not have negative Maxibons when developers graped from it", () => {
+  // it("Freezer could not have negative Maxibons when developers graped from it", () => {
     const randomDevelopers = fc.array(fc.record({ name: fc.string(), maxibonsToGrab: fc.integer() })
       .map(item => new Developer(item.name, item.maxibonsToGrab)));
     const randomInitialFreezerMaxibons = fc.integer({ min: 0 });
@@ -26,14 +26,16 @@ describe("Maxibon Kata", () => {
         randomInitialFreezerMaxibons,
         randomDevelopers,
         (initialMaxibons, developers) => {
-          const freezer = Freezer.startWith(initialMaxibons);
-          developers.forEach((developer) => {
-            developer.grabMaxibonFrom(freezer);
+          it(`Freezer started with ${initialMaxibons} maxibons could not have negative Maxibons when developers graped from it`, () => {
+            const freezer = Freezer.startWith(initialMaxibons);
+            developers.forEach((developer) => {
+              developer.grabMaxibonFrom(freezer);
+            });
+            expect(0).toBeLessThanOrEqual(freezer.numberOfMaxibons);
           });
-          expect(freezer.numberOfMaxibons).toBeGreaterThanOrEqual(0);
         })
     );
-  });
+  // });
 
   describe("Developer", () => {
     it("decrease the Maxibons at freezer when developer grapes from it", () => {
@@ -64,6 +66,5 @@ describe("Maxibon Kata", () => {
     });
 
   });
-
 
 });
