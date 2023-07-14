@@ -1,5 +1,5 @@
 import fc from "fast-check";
-import { describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { Freezer } from "./maxibon.js";
 import { Developer } from "./developer.js";
 
@@ -32,4 +32,17 @@ describe("Maxibon Kata", () => {
       })
     )
   });
+
+  describe("Developer", () => {
+    it("decrease the Maxibons at freezer when developer grapes from it", () => {
+      const freezer = new Freezer(10);
+      const developer = new Developer("Pedro", 3);
+
+      developer.grabMaxibonFrom(freezer);
+
+      expect(freezer.numberOfMaxibons).toBe(7);
+    });
+  })
+
+
 });
