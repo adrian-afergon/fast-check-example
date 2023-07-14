@@ -7,7 +7,7 @@ export class Freezer {
   }
 
   decreaseMaxibons(maxibonsToGrab: number) {
-    throw new Error("Not implemented");
+    this.maxibons -= maxibonsToGrab;
   }
 }
 
