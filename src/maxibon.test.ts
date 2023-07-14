@@ -45,4 +45,16 @@ describe("Maxibon Kata", () => {
   })
 
 
+  // This API has a delivered smell exposing the internal state of the object.
+  describe("Freezer", () => {
+    it("decrease the Maxibons at freezer when developer grapes from it", () => {
+      const freezer = new Freezer(10);
+
+      freezer.decreaseMaxibons(3);
+
+      expect(freezer.numberOfMaxibons).toBe(7);
+    })
+  })
+
+
 });
