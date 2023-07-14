@@ -18,19 +18,21 @@ describe("Test based on properties", () => {
 // Freezer -> notify when there are less than 2 maxibons
 describe("Maxibon Kata", () => {
   it("Freezer could not have negative Maxibons when developers graped from it", () => {
+    const randomDevelopers = fc.array(fc.record({ name: fc.string(), maxibonsToGrab: fc.integer() })
+      .map(item => new Developer(item.name, item.maxibonsToGrab)));
+    const randomInitialFreezerMaxibons = fc.integer({ min: 0 });
     fc.assert(
-      // We don't want to limit the number of maximum maxibons, so we use an integer.
-      //  - (for know, later we can decide it and add a limit because we have no space at Freezer)
-      // We don't want to limit the scenario to Karumi developers, so we use a generic array of developers.
-      // These developers have not any limit of maxibons to grab or name restrictions.
-      fc.property(fc.integer({min: 0}), fc.array(fc.record({ name: fc.string(), maxibonsToGrab: fc.integer() })), (initialMaxibons, developers) => {
-        const freezer = Freezer.startWith(initialMaxibons);
-        developers.map((developerParams) => {
-          new Developer(developerParams.name, developerParams.maxibonsToGrab).grabMaxibonFrom(freezer);
-        });
-        return freezer.numberOfMaxibons >= 0;
-      })
-    )
+      fc.property(
+        randomInitialFreezerMaxibons,
+        randomDevelopers,
+        (initialMaxibons, developers) => {
+          const freezer = Freezer.startWith(initialMaxibons);
+          developers.forEach((developer) => {
+            developer.grabMaxibonFrom(freezer);
+          });
+          expect(freezer.numberOfMaxibons).toBeGreaterThanOrEqual(0);
+        })
+    );
   });
 
   describe("Developer", () => {
@@ -42,7 +44,7 @@ describe("Maxibon Kata", () => {
 
       expect(freezer.numberOfMaxibons).toBe(7);
     });
-  })
+  });
 
 
   // This API has a delivered smell exposing the internal state of the object.
@@ -53,13 +55,15 @@ describe("Maxibon Kata", () => {
       freezer.decreaseMaxibons(3);
 
       expect(freezer.numberOfMaxibons).toBe(7);
-    })
-
-    it("not allows negative values when Freezer starts", () => {
-      expect(() => {Freezer.startWith(-1)}).toThrowError("Freezer cannot start with negative maxibons")
     });
 
-  })
+    it("not allows negative values when Freezer starts", () => {
+      expect(() => {
+        Freezer.startWith(-1);
+      }).toThrowError("Freezer cannot start with negative maxibons");
+    });
+
+  });
 
 
 });
