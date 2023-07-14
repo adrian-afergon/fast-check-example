@@ -23,7 +23,7 @@ describe("Maxibon Kata", () => {
       //  - (for know, later we can decide it and add a limit because we have no space at Freezer)
       // We don't want to limit the scenario to Karumi developers, so we use a generic array of developers.
       // These developers have not any limit of maxibons to grab or name restrictions.
-      fc.property(fc.integer(), fc.array(fc.record({ name: fc.string(), maxibonsToGrab: fc.integer() })), (initialMaxibons, developers) => {
+      fc.property(fc.integer({min: 0}), fc.array(fc.record({ name: fc.string(), maxibonsToGrab: fc.integer() })), (initialMaxibons, developers) => {
         const freezer = Freezer.startWith(initialMaxibons);
         developers.map((developerParams) => {
           new Developer(developerParams.name, developerParams.maxibonsToGrab).grabMaxibonFrom(freezer);
