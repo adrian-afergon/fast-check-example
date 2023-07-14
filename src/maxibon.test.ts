@@ -10,3 +10,7 @@ describe("Test based on properties", () => {
     ))
   });
 });
+
+// Freezer -> maxibons
+// Developer -> grap maxibons from freezer
+// Freezer -> notify when there are less than 2 maxibons
