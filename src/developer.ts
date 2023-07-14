@@ -6,7 +6,7 @@ export class Developer {
   }
 
   public grabMaxibonFrom(freezer: Freezer) {
-    throw new Error('Not implemented');
+    freezer.decreaseMaxibons(this.maxibonsToGrab);
   }
 
 }
